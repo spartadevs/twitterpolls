@@ -1,6 +1,7 @@
 package twitter.streaming;
 
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -14,14 +15,9 @@ import com.twitter.hbc.core.endpoint.StatusesFilterEndpoint;
 import com.twitter.hbc.core.processor.StringDelimitedProcessor;
 import com.twitter.hbc.httpclient.auth.Authentication;
 import com.twitter.hbc.httpclient.auth.OAuth1;
+import util.PropertyReader;
 
 public class TwitterStreamer implements Runnable {
-
-	private static String CONSUMER_KEY = "XX";
-	private static String CONSUMER_TOKEN = "XX";
-	private static String TOKEN_KEY = "XX";
-	private static String TOKEN_SECRET = "XX";
-
 	private BlockingQueue<String> target;
 	private List<String> queries;
 	private String threadName;
@@ -38,8 +34,13 @@ public class TwitterStreamer implements Runnable {
 	public void run() {
 		Client client = null;
 		try {
-			Authentication auth = new OAuth1(CONSUMER_KEY, CONSUMER_TOKEN,
-					TOKEN_KEY, TOKEN_SECRET);
+			Properties props = PropertyReader.get();
+			Authentication auth = new OAuth1(
+					props.getProperty("twitter.consumer_key"),
+					props.getProperty("twitter.consumer_token"),
+					props.getProperty("twitter.token_key"),
+					props.getProperty("twitter.token_secret")
+			);
 			StatusesFilterEndpoint endpoint = new StatusesFilterEndpoint()
 					.trackTerms(this.queries);
 			BlockingQueue<String> twitterStreamQ = new LinkedBlockingQueue<String>();
