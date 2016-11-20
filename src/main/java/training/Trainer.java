@@ -14,7 +14,7 @@ import org.apache.spark.mllib.util.MLUtils;
 
 public class Trainer {
     private JavaRDD<LabeledPoint> getTrainingData(JavaSparkContext jsc) {
-        String path = "C:\\Users\\abhin\\Desktop\\WORKSPACE\\CS185C3\\twitterpolls\\src\\main\\resources\\testdata.manual.2009.06.14-svm.txt";
+        String path = "src/main/resources/testdata.manual.2009.06.14-svm.txt";
         return MLUtils.loadLibSVMFile(jsc.sc(), path).toJavaRDD();
     }
 
