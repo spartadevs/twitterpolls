@@ -18,14 +18,11 @@ import com.twitter.hbc.httpclient.auth.OAuth1;
 import util.PropertyReader;
 
 public class TwitterStreamer implements Runnable {
-	private BlockingQueue<String> target;
 	private List<String> queries;
 	private String threadName;
 
-	public TwitterStreamer(String threadName, BlockingQueue<String> target,
-			List<String> queries) {
+	public TwitterStreamer(String threadName, List<String> queries) {
 		super();
-		this.target = target;
 		this.threadName = threadName;
 		this.queries = queries;
 	}
@@ -53,8 +50,8 @@ public class TwitterStreamer implements Runnable {
 
 			client = clientBuilder.build();
 			client.connect();
-			int count = 0;
-			while (count++ < 5) {
+
+			while (true) {
 				String message = twitterStreamQ.take();
 				JsonParser p = new JsonParser();
 				JsonElement tweetElement = p.parse(message);
@@ -63,7 +60,6 @@ public class TwitterStreamer implements Runnable {
 					System.out.printf("[%s] Tweet : %s\n", this.threadName,
 							tweet.get("text"));
 				}
-
 			}
 		} catch (Exception e) {
 			System.out.printf("[%s] Exception :%s", threadName, e.getMessage());
