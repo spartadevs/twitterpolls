@@ -9,7 +9,7 @@ import java.util.Properties;
 public class PropertyReader {
     private static Properties properties = null;
 
-    private void loadAllPropertiesInFolder(final File folder) {
+    private static void loadAllPropertiesInFolder(final File folder) {
         for (final File fileEntry : folder.listFiles()) {
             if (fileEntry.isDirectory()) {
                 loadAllPropertiesInFolder(fileEntry);
@@ -19,7 +19,7 @@ public class PropertyReader {
         }
     }
 
-    private void loadPropertiesFromFile(String filePath) {
+    private static void loadPropertiesFromFile(String filePath) {
         if (properties == null) {
             properties = new Properties();
         }
@@ -31,7 +31,7 @@ public class PropertyReader {
         }
     }
 
-    public Properties get() {
+    public static Properties get() {
         if (properties == null) {
             loadAllPropertiesInFolder(new File("resources/props"));
         }
