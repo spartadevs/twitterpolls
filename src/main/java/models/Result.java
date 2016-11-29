@@ -18,4 +18,29 @@ public class Result {
 
         score.put(predictedClass, score.get(predictedClass) + 1);
     }
+
+    private static void printScore(Map<Double, Integer> labelWiseScore) {
+        int total = 0;
+        for (Map.Entry<Double, Integer> entry : labelWiseScore.entrySet()) {
+            total += entry.getValue();
+//            System.out.println(entry.getKey() + "/" + entry.getValue());
+        }
+
+        System.out.println("Label wise percentages:");
+        for (Map.Entry<Double, Integer> entry : labelWiseScore.entrySet()) {
+            System.out.println(entry.getKey() + "\t:\t" + ((double)entry.getValue()/total)*100);
+        }
+    }
+
+    public static void printBrandScore(String brand) {
+        System.out.println(brand);
+        printScore(brandWiseResults.get(brand));
+    }
+
+    public static void print() {
+        for (Map.Entry<String, Map<Double, Integer>> entry : brandWiseResults.entrySet())
+        {
+            printBrandScore(entry.getKey());
+        }
+    }
 }
