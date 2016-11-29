@@ -1,0 +1,2 @@
+model.persistence.location="target/model"
+spark.app.name="My App"

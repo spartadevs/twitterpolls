@@ -1,6 +1,5 @@
-package training;
+package models.training;
 import org.apache.spark.SparkConf;
-import org.apache.spark.SparkContext;
 import org.apache.spark.api.java.JavaSparkContext;
 import scala.Tuple2;
 import org.apache.spark.api.java.function.Function;
@@ -22,7 +21,7 @@ public class Trainer {
         SparkConf conf = new SparkConf().setMaster("local").setAppName("My App");
         JavaSparkContext jsc = new JavaSparkContext(conf);
         JavaRDD<LabeledPoint>[] tmp = getTrainingData(jsc).randomSplit(new double[]{0.6, 0.4});
-        JavaRDD<LabeledPoint> training = tmp[0]; // training set
+        JavaRDD<LabeledPoint> training = tmp[0]; // models.training set
         JavaRDD<LabeledPoint> test = tmp[1]; // test set
         final NaiveBayesModel model = NaiveBayes.train(training.rdd(), 1.0);
         JavaPairRDD<Double, Double> predictionAndLabel =

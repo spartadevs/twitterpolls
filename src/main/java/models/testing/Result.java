@@ -1,10 +1,12 @@
+package models.testing;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class Result {
-    private Map<Double, Integer> score = new HashMap<>();
+    private static Map<Double, Integer> score = new HashMap<>();
 
-    public void add(Double predictedClass) {
+    public static void add(double predictedClass) {
         if (!score.containsKey(predictedClass)) {
             score.put(predictedClass, 0);
         }

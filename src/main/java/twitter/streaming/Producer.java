@@ -25,10 +25,11 @@ public class Producer {
 
 
     public void send(String topic, String message) {
-        __producer.send(new ProducerRecord<String, String>(
-                topic,
-                message));
-        __producer.flush();
+//        __producer.send(new ProducerRecord<String, String>(
+//                topic,
+//                message));
+//        __producer.flush();
+
         System.out.println("Sent: " + topic + " : " + message);
     }
 
