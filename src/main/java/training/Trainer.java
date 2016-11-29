@@ -1,10 +1,7 @@
-package models.training;
+package training;
 import org.apache.spark.SparkConf;
-<<<<<<< HEAD:src/main/java/training/Trainer.java
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
-=======
->>>>>>> refs/remotes/origin/master:src/main/java/models/training/Trainer.java
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
 import org.apache.spark.api.java.function.PairFunction;
@@ -28,13 +25,8 @@ public class Trainer implements Serializable{
     public void train() {
         SparkConf conf = new SparkConf().setMaster("local").setAppName("My App");
         JavaSparkContext jsc = new JavaSparkContext(conf);
-<<<<<<< HEAD:src/main/java/training/Trainer.java
         JavaRDD<LabeledPoint>[] tmp = getTrainingData(jsc).randomSplit(new double[]{0.8, 0.2});
         JavaRDD<LabeledPoint> training = tmp[0]; // training set
-=======
-        JavaRDD<LabeledPoint>[] tmp = getTrainingData(jsc).randomSplit(new double[]{0.6, 0.4});
-        JavaRDD<LabeledPoint> training = tmp[0]; // models.training set
->>>>>>> refs/remotes/origin/master:src/main/java/models/training/Trainer.java
         JavaRDD<LabeledPoint> test = tmp[1]; // test set
         final NaiveBayesModel model = NaiveBayes.train(training.rdd(), 1.0);
         JavaPairRDD<Double, Double> predictionAndLabel =

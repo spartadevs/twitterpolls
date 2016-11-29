@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class PropertyReader {
-    private static String filePath = "properties.props";
+    private static String filePath = "producer.props";
 
     public static Properties get() {
         try (InputStream props = Resources.getResource(filePath).openStream()) {
