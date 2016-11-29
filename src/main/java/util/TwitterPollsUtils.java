@@ -118,16 +118,4 @@ public class TwitterPollsUtils {
 				throw e;
 			}
 	}
-
-
-	public static void dumpVocabulary(Vocabulary vocab, String filePath)throws IOException{
-		try (FileOutputStream fout = new FileOutputStream(filePath);
-			 ObjectOutputStream out = new ObjectOutputStream(fout);){
-			out.writeObject(vocab);
-			out.flush();
-		}catch(Exception e){
-			System.err.println("[Error][dumpVocabulary]:"+e.getMessage());
-			throw e;
-		}
-	}
 }
