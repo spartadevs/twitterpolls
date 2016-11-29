@@ -10,7 +10,7 @@ import util.PropertyReader;
 import util.TwitterPollsUtils;
 
 public class Consumer {
-    public void consume(String brand, String tweet) {
+    public static void consume(String brand, String tweet) {
         Vector vectorizedTweet = vectorize(tweet);
 //        // TODO: 11/28/2016 see if it is ok to create new spark context
         SparkConf conf = new SparkConf().setMaster("local").setAppName(PropertyReader.get().getProperty("spark.app.name"));
@@ -19,7 +19,7 @@ public class Consumer {
         Result.add(label);
     }
 
-    private Vector vectorize(String text) {
+    private static Vector vectorize(String text) {
 //        // TODO: 11/28/2016 pass vocabulary
         return TwitterPollsUtils.vectorizeTweet(text, null);
     }
