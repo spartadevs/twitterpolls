@@ -1,2 +1,3 @@
 model.persistence.location="target/model"
+vocabulary.persistence.location="target/vocabulary"
 spark.app.name="My App"

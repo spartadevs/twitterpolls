@@ -1,10 +1,17 @@
 package util;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
 import org.apache.spark.mllib.linalg.Vector;
 import org.apache.spark.mllib.linalg.Vectors;
+
 
 public class TwitterPollsUtils {
 
@@ -63,15 +70,35 @@ public class TwitterPollsUtils {
 			wIdx[idx] = vocab.addToVocabulary(key);
 			wCnt[idx] = tweetDict.get(key).doubleValue();
 			idx++;
+
 		}
 		// Preparing a Labelled Point
 		Vector features = Vectors.sparse(idx, wIdx, wCnt);
 		return features;
 
 	}
-	
-	public static Vocabulary loadVocabulary(String filePath){
-		Vocabulary vocab = new Vocabulary();
+
+	public static Vocabulary loadVocabulary (String filePath)throws IOException,ClassNotFoundException{
+		Vocabulary vocab = null;
+		try (FileInputStream fin = new FileInputStream(filePath);
+			 ObjectInputStream out = new ObjectInputStream(fin);){
+			vocab = (Vocabulary)out.readObject();
+		}catch(Exception e){
+			System.err.println("[Error][loadVocabulary]:"+e.getMessage());
+			throw e;
+		}
 		return vocab;
+	}
+
+
+	public static void dumpVocabulary(Vocabulary vocab, String filePath)throws IOException{
+		try (FileOutputStream fout = new FileOutputStream(filePath);
+			 ObjectOutputStream out = new ObjectOutputStream(fout);){
+			out.writeObject(vocab);
+			out.flush();
+		}catch(Exception e){
+			System.err.println("[Error][dumpVocabulary]:"+e.getMessage());
+			throw e;
+		}
 	}
 }
