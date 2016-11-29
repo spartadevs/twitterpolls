@@ -12,8 +12,6 @@ import java.util.List;
 import org.apache.spark.mllib.linalg.Vector;
 import org.apache.spark.mllib.linalg.Vectors;
 
-import models.Vocabulary;
-
 
 public class TwitterPollsUtils {
 
@@ -85,18 +83,18 @@ public class TwitterPollsUtils {
 		StringBuffer sb = new StringBuffer();
 		HashMap<String, Integer> tweetDict = TwitterPollsUtils
 				.getCleanedTweetDictionary(tweet);
-		
+
 		for(String word : tweetDict.keySet()){
 			int wordIndex = vocab.addToVocabulary(word);
 			int wordFreq = tweetDict.get(word);
 			sb.append(" ").append(wordIndex).append(":").append(wordFreq);
-			
+
 		}
-		
-		return sb.toString(); 
-		
+
+		return sb.toString();
+
 	}
-	
+
 	public static Vocabulary loadVocabulary (String filePath)throws IOException,ClassNotFoundException{
 		Vocabulary vocab = null;
 		try (FileInputStream fin = new FileInputStream(filePath);
@@ -108,8 +106,8 @@ public class TwitterPollsUtils {
 				}
 		return vocab;
 		}
-	
-	
+
+
 	public static void dumpVocabulary(Vocabulary vocab, String filePath)throws IOException{
 		try (FileOutputStream fout = new FileOutputStream(filePath);
 			 ObjectOutputStream out = new ObjectOutputStream(fout);){

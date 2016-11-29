@@ -2,21 +2,42 @@ package util;
 
 import com.google.common.io.Resources;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class PropertyReader {
-    private static String filePath = "producer.props";
+    private static Properties properties = null;
 
-    public static Properties get() {
-        try (InputStream props = Resources.getResource(filePath).openStream()) {
-            Properties properties = new Properties();
-            properties.load(props);
-            return properties;
-        } catch (Exception e) {
-            System.err.println(e.toString());
+    private static void loadAllPropertiesInFolder(final File folder) {
+        for (final File fileEntry : folder.listFiles()) {
+            if (fileEntry.isDirectory()) {
+                loadAllPropertiesInFolder(fileEntry);
+            } else {
+                loadPropertiesFromFile(fileEntry.getAbsolutePath());
+            }
+        }
+    }
+
+    private static void loadPropertiesFromFile(String filePath) {
+        if (properties == null) {
+            properties = new Properties();
         }
 
-        return null;
+        try (InputStream props = new FileInputStream(filePath)) {
+            properties.load(props);
+        } catch (IOException e) {
+            System.err.println(e.toString());
+        }
+    }
+
+    public static Properties get() {
+        if (properties == null) {
+            loadAllPropertiesInFolder(new File("src\\main\\resources\\props"));
+        }
+
+        return properties;
     }
 }
