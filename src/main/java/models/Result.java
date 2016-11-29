@@ -23,17 +23,17 @@ public class Result {
         int total = 0;
         for (Map.Entry<Double, Integer> entry : labelWiseScore.entrySet()) {
             total += entry.getValue();
-//            System.out.println(entry.getKey() + "/" + entry.getValue());
         }
 
         System.out.println("Label wise percentages:");
         for (Map.Entry<Double, Integer> entry : labelWiseScore.entrySet()) {
-            System.out.println(entry.getKey() + "\t:\t" + ((double)entry.getValue()/total)*100);
+            System.out.println(entry.getKey() + "\t:\t" + ((double)entry.getValue()/total)*100 + "%");
         }
     }
 
     public static void printBrandScore(String brand) {
         System.out.println(brand);
+        System.out.println("--------------------------");
         printScore(brandWiseResults.get(brand));
     }
 
@@ -41,6 +41,7 @@ public class Result {
         for (Map.Entry<String, Map<Double, Integer>> entry : brandWiseResults.entrySet())
         {
             printBrandScore(entry.getKey());
+            System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%");
         }
     }
 }
