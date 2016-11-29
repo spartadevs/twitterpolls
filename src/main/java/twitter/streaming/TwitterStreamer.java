@@ -50,8 +50,9 @@ public class TwitterStreamer implements Runnable {
 
 			client = clientBuilder.build();
 			client.connect();
-			int count = 0;
-			while (count++ < 5) {
+			Producer producer = new Producer();
+
+			while (true) {
 				String message = twitterStreamQ.take();
 				JsonParser p = new JsonParser();
 				JsonElement tweetElement = p.parse(message);
@@ -59,6 +60,7 @@ public class TwitterStreamer implements Runnable {
 					JsonObject tweet = tweetElement.getAsJsonObject();
 					System.out.printf("[%s] Tweet : %s\n", this.threadName,
 							tweet.get("text"));
+					producer.send(this.threadName, tweet.get("text").getAsString());
 				}
 
 			}

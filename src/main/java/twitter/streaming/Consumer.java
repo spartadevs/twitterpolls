@@ -7,7 +7,7 @@ import org.apache.spark.mllib.linalg.Vector;
 import util.ModelUtil;
 import util.PropertyReader;
 import util.TwitterPollsUtils;
-import util.Vocabulary;
+import models.Vocabulary;
 
 import java.io.IOException;
 

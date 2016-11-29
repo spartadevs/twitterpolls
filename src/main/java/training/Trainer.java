@@ -18,7 +18,7 @@ public class Trainer implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
     private JavaRDD<LabeledPoint> getTrainingData(JavaSparkContext jsc) {
-        String path = "resources/training.1600000.processed.noemoticon.txt";
+        String path = "src/main/resources/training.1600000.processed.noemoticon.txt";
         return MLUtils.loadLibSVMFile(jsc.sc(), path,-1).toJavaRDD();
     }
 
