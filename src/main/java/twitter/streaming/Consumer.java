@@ -1,6 +1,6 @@
 package twitter.streaming;
 
-import models.testing.Result;
+import models.Result;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.mllib.linalg.Vector;

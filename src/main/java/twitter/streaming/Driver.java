@@ -18,7 +18,8 @@ public class Driver {
 				execService = Executors.newFixedThreadPool(params);
 				while (counter < params) {
 					List<String> queryString = Arrays.asList(args[counter].split("-"));
-					TwitterStreamer streamer = new TwitterStreamer("Thread"+ counter, queryString);
+					TwitterStreamer streamer = new TwitterStreamer("Thread"+ counter
+											,new LinkedBlockingQueue<String>(10),queryString);
 					execService.execute(streamer);
 					counter++;
 				}

@@ -77,17 +77,46 @@ public class TwitterPollsUtils {
 		return features;
 
 	}
+	
+	public static String generateVectorString(String tweet, Vocabulary vocab) {
+
+		StringBuffer sb = new StringBuffer();
+		HashMap<String, Integer> tweetDict = TwitterPollsUtils
+				.getCleanedTweetDictionary(tweet);
+
+		for(String word : tweetDict.keySet()){
+			int wordIndex = vocab.addToVocabulary(word);
+			int wordFreq = tweetDict.get(word);
+			sb.append(" ").append(wordIndex).append(":").append(wordFreq);
+
+		}
+
+		return sb.toString();
+
+	}
 
 	public static Vocabulary loadVocabulary (String filePath)throws IOException,ClassNotFoundException{
 		Vocabulary vocab = null;
 		try (FileInputStream fin = new FileInputStream(filePath);
-			 ObjectInputStream out = new ObjectInputStream(fin);){
-			vocab = (Vocabulary)out.readObject();
-		}catch(Exception e){
-			System.err.println("[Error][loadVocabulary]:"+e.getMessage());
-			throw e;
-		}
+				 ObjectInputStream out = new ObjectInputStream(fin);){
+					vocab = (Vocabulary)out.readObject();
+				}catch(Exception e){
+					System.err.println("[Error][loadVocabulary]:"+e.getMessage());
+					throw e;
+				}
 		return vocab;
+		}
+
+
+	public static void dumpVocabulary(Vocabulary vocab, String filePath)throws IOException{
+		try (FileOutputStream fout = new FileOutputStream(filePath);
+			 ObjectOutputStream out = new ObjectOutputStream(fout);){
+				out.writeObject(vocab);
+				out.flush();
+			}catch(Exception e){
+				System.err.println("[Error][dumpVocabulary]:"+e.getMessage());
+				throw e;
+			}
 	}
 
 
