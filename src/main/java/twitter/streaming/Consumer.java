@@ -1,15 +1,17 @@
 package twitter.streaming;
 
+import java.io.IOException;
+
 import models.Result;
+import models.Vocabulary;
+
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.mllib.linalg.Vector;
+
 import util.ModelUtil;
 import util.PropertyReader;
 import util.TwitterPollsUtils;
-import util.Vocabulary;
-
-import java.io.IOException;
 
 public class Consumer {
     private static Consumer __consumer = null;
