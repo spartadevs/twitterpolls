@@ -8,6 +8,9 @@ import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
+import com.google.common.primitives.*;
+import models.Vocabulary;
 
 import org.apache.spark.mllib.linalg.Vector;
 import org.apache.spark.mllib.linalg.Vectors;
@@ -26,7 +29,7 @@ public class TwitterPollsUtils {
 		String result = null;
 		if (null != word && !word.trim().isEmpty()) {
 			if (!word.startsWith("@") && !word.startsWith("http")) {
-				word = word.replaceAll("[^A-Za-z]+", "");
+				word = word.replaceAll("[^A-Za-z0-9]","");
 				/*
 				 * if(!ignoreList.contains(word.toUpperCase())) {}
 				 */
@@ -61,19 +64,21 @@ public class TwitterPollsUtils {
 
 	public static Vector vectorizeTweet(String tweet, Vocabulary vocab) {
 
+		//Generate word-frequency map
 		HashMap<String, Integer> tweetDict = TwitterPollsUtils
 				.getCleanedTweetDictionary(tweet);
-		int[] wIdx = new int[tweetDict.size()];
-		double[] wCnt = new double[tweetDict.size()];
-		int idx = 0;
+		TreeMap<Integer,Double> indexDict = new TreeMap<Integer,Double>();
+		
+		//Generate index-value map
 		for (String key : tweetDict.keySet()) {
-			wIdx[idx] = vocab.addToVocabulary(key);
-			wCnt[idx] = tweetDict.get(key).doubleValue();
-			idx++;
-
+			int wIdx = vocab.addToVocabulary(key);
+			if(wIdx!=-1){
+				indexDict.put(wIdx, tweetDict.get(key).doubleValue());
+			}
 		}
-		// Preparing a Labelled Point
-		Vector features = Vectors.sparse(idx, wIdx, wCnt);
+		// Preparing a Sparse Vector
+		int dictLen = indexDict.size();
+		Vector features = Vectors.sparse(dictLen, Ints.toArray(indexDict.keySet()), Doubles.toArray(indexDict.values()));
 		return features;
 
 	}
@@ -81,16 +86,24 @@ public class TwitterPollsUtils {
 	public static String generateVectorString(String tweet, Vocabulary vocab) {
 
 		StringBuffer sb = new StringBuffer();
+		//Generate word-frequency map
 		HashMap<String, Integer> tweetDict = TwitterPollsUtils
 				.getCleanedTweetDictionary(tweet);
-
-		for(String word : tweetDict.keySet()){
-			int wordIndex = vocab.addToVocabulary(word);
-			int wordFreq = tweetDict.get(word);
-			sb.append(" ").append(wordIndex).append(":").append(wordFreq);
-
+		TreeMap<Integer,Integer> indexDict = new TreeMap<Integer,Integer>();
+		
+		//Generate index-value map
+		for (String key : tweetDict.keySet()) {
+			int wIdx = vocab.addToVocabulary(key);
+			if(wIdx!=-1){
+				//System.out.println(key + wIdx);
+				indexDict.put(wIdx, tweetDict.get(key));
+			}
 		}
-
+		//Preparing SVM Format String
+		for(Integer wordIndex : indexDict.keySet()){
+				double wordFreq = indexDict.get(wordIndex);
+				sb.append(" ").append(wordIndex).append(":").append(wordFreq);
+			}
 		return sb.toString();
 
 	}

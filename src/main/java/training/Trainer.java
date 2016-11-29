@@ -38,6 +38,8 @@ public class Trainer implements Serializable{
                         return new Tuple2<>(model.predict(p.features()), p.label());
                     }
                 });
+      
+        	
         	double accuracy = predictionAndLabel.filter(new Function<Tuple2<Double, Double>, Boolean>() {
             private static final long serialVersionUID = 1L;
 
@@ -48,8 +50,8 @@ public class Trainer implements Serializable{
         }).count() / (double) test.count();
 
         System.out.println("accuracy:" + accuracy);
-        // Save and load model
-        //model.save(jsc.sc(), "target/tmp/myNaiveBayesModel");
+        //Save and load model
+        //model.save(jsc.sc(), "target/model");
         //NaiveBayesModel sameModel = NaiveBayesModel.load(jsc.sc(), "target/tmp/myNaiveBayesModel");
     }
 
