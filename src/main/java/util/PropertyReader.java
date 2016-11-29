@@ -3,6 +3,8 @@ package util;
 import com.google.common.io.Resources;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -14,7 +16,7 @@ public class PropertyReader {
             if (fileEntry.isDirectory()) {
                 loadAllPropertiesInFolder(fileEntry);
             } else {
-                loadPropertiesFromFile(fileEntry.getPath());
+                loadPropertiesFromFile(fileEntry.getAbsolutePath());
             }
         }
     }
@@ -24,16 +26,16 @@ public class PropertyReader {
             properties = new Properties();
         }
 
-        try (InputStream props = Resources.getResource(filePath).openStream()) {
+        try (InputStream props = new FileInputStream(filePath)) {
             properties.load(props);
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.err.println(e.toString());
         }
     }
 
     public static Properties get() {
         if (properties == null) {
-            loadAllPropertiesInFolder(new File("resources/props"));
+            loadAllPropertiesInFolder(new File("src\\main\\resources\\props"));
         }
 
         return properties;

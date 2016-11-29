@@ -62,7 +62,7 @@ public class TwitterStreamer implements Runnable {
 				}
 
 			}
-		} catch (Exception e) {
+		} catch (InterruptedException e) {
 			System.out.printf("[%s] Exception :%s", threadName, e.getMessage());
 		} finally {
 			if (client != null) {
