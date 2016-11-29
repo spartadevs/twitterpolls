@@ -3,7 +3,6 @@ package twitter.streaming;
 import models.testing.Result;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.mllib.classification.NaiveBayesModel;
 import org.apache.spark.mllib.linalg.Vector;
 import util.ModelUtil;
 import util.PropertyReader;

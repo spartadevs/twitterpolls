@@ -29,7 +29,7 @@ public class Producer {
 //                topic,
 //                message));
 //        __producer.flush();
-        Consumer.consume(topic, message);
+        Consumer.getInstance().consume(topic, message);
         System.out.println("Sent: " + topic + " : " + message);
     }
 
