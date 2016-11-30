@@ -2,6 +2,8 @@ package twitter.streaming;
 
 import java.io.IOException;
 
+import com.google.common.io.Resources;
+
 public class Producer {
     private static org.apache.kafka.clients.producer.KafkaProducer __producer = null;
 
