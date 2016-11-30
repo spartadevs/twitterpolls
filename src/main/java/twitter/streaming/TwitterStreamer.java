@@ -20,9 +20,11 @@ import util.PropertyReader;
 public class TwitterStreamer implements Runnable {
 	private List<String> queries;
 	private String threadName;
+	private KafkaZooKeeperDummy zooKeeper;
 
-	public TwitterStreamer(String threadName, List<String> queries) {
+	public TwitterStreamer(String threadName, List<String> queries, KafkaZooKeeperDummy zooKeeper) {
 		super();
+		this.zooKeeper = zooKeeper;
 		this.threadName = threadName;
 		this.queries = queries;
 	}
@@ -50,9 +52,10 @@ public class TwitterStreamer implements Runnable {
 
 			client = clientBuilder.build();
 			client.connect();
-			Producer producer = new Producer();
 
-			while (true) {
+			int countTweets = 0;
+			while (countTweets < 20) {
+				countTweets++;
 				String message = twitterStreamQ.take();
 				JsonParser p = new JsonParser();
 				JsonElement tweetElement = p.parse(message);
@@ -60,9 +63,8 @@ public class TwitterStreamer implements Runnable {
 					JsonObject tweet = tweetElement.getAsJsonObject();
 					System.out.printf("[%s] Tweet : %s\n", this.threadName,
 							tweet.get("text"));
-					producer.send(this.threadName, tweet.get("text").getAsString());
+					zooKeeper.getProducer().send(String.join("," ,this.queries), tweet.get("text").getAsString());
 				}
-
 			}
 		} catch (InterruptedException e) {
 			System.out.printf("[%s] Exception :%s", threadName, e.getMessage());

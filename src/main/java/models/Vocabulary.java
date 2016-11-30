@@ -1,5 +1,7 @@
 package models;
 
+import scala.util.parsing.combinator.testing.Str;
+
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
@@ -25,27 +27,38 @@ public class Vocabulary implements Serializable {
 	}
 
 	public Integer addToVocabulary(String word){
-		Integer index = -1;
-		if(null!=word && word.trim()!=""){
-			word = word.trim();
-			if(indexMap.containsKey(word)){index = indexMap.get(word);}
-			else{
-				index = ++vocabIndex;
-				indexMap.put(word, index);
-			}
+		Integer index = getWordIndex(word);
+		if(index == -1){
+			word = cleanWord(word);
+			index = ++vocabIndex;
+			indexMap.put(word, index);
 		}
+
 		return index;
 	}
 	
 	public Integer getWordIndex(String word){
 		Integer index = -1;
-		if(null!=word && word.trim()!=""){
-			word = word.trim();
-			if(indexMap.containsKey(word)){
-				index = indexMap.get(word);
+		String cleanedWord = cleanWord(word);
+
+		if(!cleanedWord.equals("")){
+			if(indexMap.containsKey(cleanedWord)){
+				index = indexMap.get(cleanedWord);
 			}
 		}
+
 		return index;
 	}
-	
+
+	private String cleanWord(String word) {
+		if (word!=null) {
+			return word.trim();
+		}
+
+		return "";
+	}
+
+	public int getSize() {
+		return vocabIndex;
+	}
 }

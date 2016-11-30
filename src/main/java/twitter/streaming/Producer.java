@@ -5,24 +5,14 @@ import java.io.IOException;
 import com.google.common.io.Resources;
 
 public class Producer {
-    private static org.apache.kafka.clients.producer.KafkaProducer __producer = null;
+    KafkaZooKeeperDummy zooKeeper;
 
-    static {
-        if (__producer == null) {
-//            __producer = new org.apache.kafka.clients.producer.KafkaProducer(PropertyReader.get());
-        }
-    }
-
-    public static void main(String[] args) throws IOException {
-        (new Producer()).send("topic", "abc");
+    Producer(KafkaZooKeeperDummy zooKeeper) {
+        this.zooKeeper = zooKeeper;
     }
 
     public void send(String topic, String message) {
-//        __producer.send(new ProducerRecord<String, String>(
-//                topic,
-//                message));
-//        __producer.flush();
-        Consumer.getInstance().consume(topic, message);
+        zooKeeper.getConsumer().consume(topic, message);
         System.out.println("Sent: " + topic + " : " + message);
     }
 }
