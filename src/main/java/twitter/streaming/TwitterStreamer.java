@@ -54,7 +54,8 @@ public class TwitterStreamer implements Runnable {
 			client.connect();
 
 			int countTweets = 0;
-			while (countTweets < 20) {
+			int maxLimit = Integer.parseInt(PropertyReader.get().getProperty("tweets.maxFetchLimit"));
+			while (countTweets < maxLimit) {
 				countTweets++;
 				String message = twitterStreamQ.take();
 				JsonParser p = new JsonParser();
