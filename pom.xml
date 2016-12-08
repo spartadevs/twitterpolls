@@ -25,8 +25,6 @@
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.json/json -->
 		<!-- https://mvnrepository.com/artifact/javax.json/javax.json-api -->
-		
-		
 		<dependency>
 			<groupId>com.twitter</groupId>
 			<artifactId>hbc-core</artifactId> <!-- or hbc-twitter4j -->

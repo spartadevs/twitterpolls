@@ -1,3 +1,4 @@
 model.persistence.location=src\\main\\resources\\model
 vocabulary.persistence.location=src\\main\\resources\\vocabulary.dat
 spark.app.name=My App
+tweets.maxFetchLimit=100
