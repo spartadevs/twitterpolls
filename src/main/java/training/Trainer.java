@@ -12,18 +12,19 @@ import org.apache.spark.mllib.util.MLUtils;
 import java.io.Serializable;
 
 import scala.Tuple2;
+import util.PropertyReader;
 
 public class Trainer implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
     private JavaRDD<LabeledPoint> getTrainingData(JavaSparkContext jsc) {
-        String path = "resources/training.1600000.processed.noemoticon.txt";
+        String path = "src/main/resources/training.1600000.processed.noemoticon.txt";
         return MLUtils.loadLibSVMFile(jsc.sc(), path,-1).toJavaRDD();
     }
 
-    public void train() {
-        SparkConf conf = new SparkConf().setMaster("local").setAppName("My App");
+    public NaiveBayesModel train() {
+        SparkConf conf = new SparkConf().setMaster("local").setAppName(PropertyReader.get().getProperty("spark.app.name"));
         JavaSparkContext jsc = new JavaSparkContext(conf);
         JavaRDD<LabeledPoint>[] tmp = getTrainingData(jsc).randomSplit(new double[]{0.8, 0.2});
         JavaRDD<LabeledPoint> training = tmp[0]; // training set
@@ -50,9 +51,7 @@ public class Trainer implements Serializable{
         }).count() / (double) test.count();
 
         System.out.println("accuracy:" + accuracy);
-        //Save and load model
-        //model.save(jsc.sc(), "target/model");
-        //NaiveBayesModel sameModel = NaiveBayesModel.load(jsc.sc(), "target/tmp/myNaiveBayesModel");
+        return model;
     }
 
     public static void main(String[] args) {

@@ -35,7 +35,7 @@ public class PropertyReader {
 
     public static Properties get() {
         if (properties == null) {
-            loadAllPropertiesInFolder(new File("src\\main\\resources\\props"));
+            loadAllPropertiesInFolder(new File("src/main/resources/props"));
         }
 
         return properties;

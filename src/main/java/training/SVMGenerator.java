@@ -7,6 +7,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 
 import models.Vocabulary;
+import util.PropertyReader;
 import util.TwitterPollsUtils;
 
 import com.opencsv.CSVReader;
@@ -50,7 +51,7 @@ public class SVMGenerator {
 			//PropertyReader.loadPropertiesFromFile("resources/props/main.props");
 			
 	
-			TwitterPollsUtils.dumpVocabulary(vocab, "target/vocabulary");
+			TwitterPollsUtils.dumpVocabulary(vocab, PropertyReader.get().getProperty("vocabulary.persistence.location"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
